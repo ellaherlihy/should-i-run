@@ -1,23 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import './styling/form.css'
+
+import React, { useState, useEffect } from 'react';
+import RunningForm from './components/runningForm';
 
 function App() {
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (err) => {
+          setError(err.message);
+        }
+        );
+      } else {
+        setError("Geolocation is not available in your browser.");
+      }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <RunningForm />
+      <h1>hello</h1>
     </div>
   );
 }
