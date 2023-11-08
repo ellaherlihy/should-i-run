@@ -3,35 +3,14 @@ import './styling/form.css'
 import './styling/runningForm.css'
 
 
-import React, { useState, useEffect } from 'react';
 import RunningForm from './components/runningForm';
 
 function App() {
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [error, setError] = useState(null);
-
-
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (err) => {
-          setError(err.message);
-        }
-        );
-      } else {
-        setError("Geolocation is not available in your browser.");
-      }
-  }, []);
-
   return (
-    <div className="App">
+    <main>
+      <h1>Should I go for a run?</h1>
       <RunningForm />
-    </div>
+    </main>
   );
 }
 

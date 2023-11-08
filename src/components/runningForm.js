@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { BiSolidLeaf } from 'react-icons/bi';
+import { TiWeatherPartlySunny } from 'react-icons/ti';
+import { FaTemperatureLow } from 'react-icons/fa';
 
 const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 const airQualityAPIKey = process.env.REACT_APP_AQ_API_KEY;
@@ -6,7 +9,7 @@ const airQualityAPIKey = process.env.REACT_APP_AQ_API_KEY;
 const weatherIcons = {
   "01d": "clear sky (day)",
   "04d": "broken clouds",
-  "01n": "clear sky (night)",
+  "04n": "clear sky (night)",
   "02d": "few clouds (day)",
   "02n": "few clouds (night)",
   "03d": "scattered clouds",
@@ -21,14 +24,15 @@ const weatherIcons = {
 export default function RunningFormForm() {
   const [formData, setFormData] = React.useState(
     {
-      address: "",
+      postcode: "",
     }
   )
 
   const [location, setLocation ] = React.useState(
     {
       lat: "",
-      long: ""
+      long: "",
+      address: "",
     }
   )
 
@@ -38,82 +42,98 @@ export default function RunningFormForm() {
   const [temperature, setTemperature ] = React.useState(null)
 
 
-    function handleChange(event) {
-      const {name, value, type, checked} = event.target
-      setFormData(prevFormData => {
-        return {
-          ...prevFormData,
-          [name]: type === "checkbox" ? checked : value
-        }
-      })
-    }
+  function handleChange(event) {
+    const {name, value, type, checked} = event.target
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        [name]: type === "checkbox" ? checked : value
+      }
+    })
+  }
 
-    async function fetchGoogleAPI(event) {
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.address}&key=${googleAPIKey}`
+  async function fetchGoogleAPI(event) {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.postcode}&key=${googleAPIKey}`
+      );
+      const data = await response.json();
+
+      if (data.status === "OK") {
+        console.log(data)
+        const lat = data.results[0].geometry.location.lat;
+        const lng = data.results[0].geometry.location.lng;
+        const address = data.results[0].formatted_address
+        setLocation({ lat: lat, long: lng, address: address });
+
+      } else {
+        console.error("Geocoding request failed");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+    airQualityApi()
+  }
+
+  async function airQualityApi() {
+    try {
+      const secondResponse = await fetch(
+        `http://api.airvisual.com/v2/nearest_city?lat=${location.lat}&lon=-${location.long}&key=${airQualityAPIKey}`
         );
-        const data = await response.json();
+      const secondData = await secondResponse.json();
+      console.log(secondData)
+      setAQI(secondData.data.current.pollution.aqius)
+      setWeather(secondData.data.current.weather.ic)
+      setTemperature(secondData.data.current.weather.tp)
 
-        if (data.status === "OK") {
-          console.log(data)
-          const lat = data.results[0].geometry.location.lat;
-          const lng = data.results[0].geometry.location.lng;
-          setLocation({ lat: lat, long: lng });
-
-        } else {
-          console.error("Geocoding request failed");
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-      airQualityApi()
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
+  }
 
-    async function airQualityApi() {
-      try {
-        const secondResponse = await fetch(
-          `http://api.airvisual.com/v2/nearest_city?lat=${location.lat}&lon=-${location.long}&key=${airQualityAPIKey}`
-          );
-        const secondData = await secondResponse.json();
-        console.log(secondData)
-        setAQI(secondData.data.current.pollution.aqius)
-        setWeather(secondData.data.current.weather.ic)
-        setTemperature(secondData.data.current.weather.tp)
+  const handleSubmit = e => {
+    e.preventDefault()
+    fetchGoogleAPI()
+    setFormSubmitted(true)
+  }
 
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    }
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
-    useEffect(() => {
-    }, [formData])
-
-    const handleSubmit = e => {
-      e.preventDefault()
-      fetchGoogleAPI()
-      setFormSubmitted(true)
-    }
-
-    return (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="duration">Where do you want to run?</label>
-        <br />
-        <input
-          type="text"
-          placeholder="Enter postcode"
-          onChange={handleChange}
-          name="address"
-          value={formData.address}
-        />
-        <button>Submit</button>
-        {formSubmitted && (
-        <div>
-          <p>The air quality is currently {AQI <= 50 ? "good" : "bad"}</p>
-          <p>The weather forecast is {weatherIcons[weather]}</p>
-          <p>The temperature is {temperature} degrees</p>
-        </div>
+  return (
+    <div>
+      {!formSubmitted && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="duration">Where do you want to run?</label>
+          <br />
+          <input
+            type="text"
+            placeholder="Enter postcode"
+            onChange={handleChange}
+            name="postcode"
+            value={formData.postcode}
+          />
+          <button>help me decide 🏃‍♀️</button>
+        </form>
       )}
-    </form>
+        {formSubmitted && (
+          <div className="results">
+            <div className="results--section">
+              <p><logo><BiSolidLeaf /></logo></p>
+              <p>The air quality in {location.address} is currently {AQI <= 50 ? "good" : "bad"}</p>
+            </div>
+            <div className="results--section">
+              <p><logo><TiWeatherPartlySunny /></logo></p>
+              <p>The weather forecast is {weatherIcons[weather]}</p>
+            </div>
+            <div className="results--section">
+              <p><logo><FaTemperatureLow /></logo></p>
+              <p>The temperature is {temperature} degrees</p>
+            </div>
+            <button onClick={refreshPage}>Check out somewhere else!</button>
+          </div>
+        )}
+    </div>
   )
 }
