@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect } from "react";
 
 const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 const airQualityAPIKey = process.env.REACT_APP_AQ_API_KEY;
+
+const weatherIcons = {
+  "01d": "clear sky (day)",
+  "04d": "broken clouds",
+  "01n": "clear sky (night)",
+  "02d": "few clouds (day)",
+  "02n": "few clouds (night)",
+  "03d": "scattered clouds",
+  "09d": "rain showers",
+  "10d": "rain (day time)",
+  "10n": "rain (night time)",
+  "11d": "thunderstorm",
+  "13d": "snow",
+  "50d": "mist",
+}
 
 export default function RunningFormForm() {
   const [formData, setFormData] = React.useState(
     {
       address: "",
-      duration: ""
     }
   )
 
@@ -17,6 +31,12 @@ export default function RunningFormForm() {
       long: ""
     }
   )
+
+  const [formSubmitted, setFormSubmitted] = React.useState(false);
+  const [AQI, setAQI ] = React.useState(null)
+  const [weather, setWeather ] = React.useState(null)
+  const [temperature, setTemperature ] = React.useState(null)
+
 
     function handleChange(event) {
       const {name, value, type, checked} = event.target
@@ -28,9 +48,7 @@ export default function RunningFormForm() {
       })
     }
 
-    async function handleSubmit(event) {
-      event.preventDefault();
-
+    async function fetchGoogleAPI(event) {
       try {
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.address}&key=${googleAPIKey}`
@@ -38,10 +56,10 @@ export default function RunningFormForm() {
         const data = await response.json();
 
         if (data.status === "OK") {
+          console.log(data)
           const lat = data.results[0].geometry.location.lat;
           const lng = data.results[0].geometry.location.lng;
           setLocation({ lat: lat, long: lng });
-          console.log("trying AQ API")
 
         } else {
           console.error("Geocoding request failed");
@@ -49,26 +67,33 @@ export default function RunningFormForm() {
       } catch (error) {
         console.error("An error occurred:", error);
       }
-      return location
-      // airQualityApi()
+      airQualityApi()
     }
 
     async function airQualityApi() {
       try {
         const secondResponse = await fetch(
           `http://api.airvisual.com/v2/nearest_city?lat=${location.lat}&lon=-${location.long}&key=${airQualityAPIKey}`
-        );
+          );
         const secondData = await secondResponse.json();
-        console.log(location.lat)
-        console.log(location.long)
         console.log(secondData)
+        setAQI(secondData.data.current.pollution.aqius)
+        setWeather(secondData.data.current.weather.ic)
+        setTemperature(secondData.data.current.weather.tp)
 
       } catch (error) {
         console.error("An error occurred:", error);
       }
     }
 
-    // airQualityApi()
+    useEffect(() => {
+    }, [formData])
+
+    const handleSubmit = e => {
+      e.preventDefault()
+      fetchGoogleAPI()
+      setFormSubmitted(true)
+    }
 
     return (
       <form onSubmit={handleSubmit}>
@@ -81,24 +106,14 @@ export default function RunningFormForm() {
           name="address"
           value={formData.address}
         />
-        <label htmlFor="duration">How long for?</label>
-        <br />
-        <select
-          id="duration"
-          value={formData.duration}
-          onChange={handleChange}
-          name="duration"
-        >
-          <option value="">Select a length of time</option>
-          <option value="<30mins">Less than 30mins</option>
-          <option value="30-60mins">30-60mins</option>
-          <option value="<1hr">1 hour+</option>
-        </select>
-        <br />
-        <br />
         <button>Submit</button>
-        <p>Current Location: {location.lat}, {location.long}</p>
-
+        {formSubmitted && (
+        <div>
+          <p>The air quality is currently {AQI <= 50 ? "good" : "bad"}</p>
+          <p>The weather forecast is {weatherIcons[weather]}</p>
+          <p>The temperature is {temperature} degrees</p>
+        </div>
+      )}
     </form>
   )
 }

@@ -1,5 +1,7 @@
 import './App.css';
 import './styling/form.css'
+import './styling/runningForm.css'
+
 
 import React, { useState, useEffect } from 'react';
 import RunningForm from './components/runningForm';
@@ -29,7 +31,6 @@ function App() {
   return (
     <div className="App">
       <RunningForm />
-      <h1>hello</h1>
     </div>
   );
 }
