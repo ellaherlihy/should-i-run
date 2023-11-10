@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;500;900&display=swap');
+
 form {
   display: flex;
   align-items: center;
@@ -6,9 +8,8 @@ form {
 }
 
 input[type="text"], input[type="email"] {
-  margin-bottom: 1rem;
   height: 2rem;
-  text-indent: 10px;
+  text-indent: 1rem;
   border: 1px solid #444;
   border-radius: 5px;
   display: block;
@@ -27,18 +28,20 @@ textarea {
 
 p {
   text-align: center;
+  padding: 0 0 0 0;
+  margin: 0;
 }
 
 button {
   align-items: center;
-  background-color: #fee6e3;
+  background-color: rgb(8, 187, 38);
   border: 2px solid #111;
   border-radius: .5rem;
   box-sizing: border-box;
-  color: #111;
+  color: white;
   cursor: pointer;
   display: flex;
-  font-family: Inter,sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-size: 1rem;
   height: 3rem;
   justify-content: center;
@@ -51,6 +54,7 @@ button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  margin: 2rem 0 0 0;
 }
 
 button:after {
@@ -73,7 +77,7 @@ button:hover:after {
 }
 
 button:active {
-  background-color: #ffdeda;
+  background-color: rgb(8, 187, 38);
   outline: 0;
 }
 
@@ -88,10 +92,12 @@ button:hover {
   flex-direction: column;
 }
 
-logo {
-  font-size: larger;
+.logo {
+  font-size: 2rem;
   padding-right: .5rem;
-  color: blue;
+  color: rgb(7, 70, 17);
+  margin: 1rem 0 0.5rem 0;
+  padding: 0;
 }
 
 .results--section {

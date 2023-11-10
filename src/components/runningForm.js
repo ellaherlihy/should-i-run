@@ -1,7 +1,7 @@
 import React from "react";
 import { BiSolidLeaf } from 'react-icons/bi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
-import { FaTemperatureLow } from 'react-icons/fa';
+import { FaTemperatureQuarter } from 'react-icons/fa6';
 
 const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 const airQualityAPIKey = process.env.REACT_APP_AQ_API_KEY;
@@ -105,6 +105,7 @@ export default function RunningFormForm() {
     <div>
       {!formSubmitted && (
         <form onSubmit={handleSubmit}>
+          <h1>Should I go for a run?</h1>
           <label htmlFor="duration">Where do you want to run?</label>
           <br />
           <input
@@ -120,15 +121,15 @@ export default function RunningFormForm() {
         {formSubmitted && (
           <div className="results">
             <div className="results--section">
-              <p><logo><BiSolidLeaf /></logo></p>
+              <p><div className="logo"><BiSolidLeaf /></div></p>
               <p>The air quality in {location.address} is currently {AQI <= 50 ? "good" : "bad"}</p>
             </div>
             <div className="results--section">
-              <p><logo><TiWeatherPartlySunny /></logo></p>
+              <p><div className="logo"><TiWeatherPartlySunny /></div></p>
               <p>The weather forecast is {weatherIcons[weather]}</p>
             </div>
             <div className="results--section">
-              <p><logo><FaTemperatureLow /></logo></p>
+              <p><div className="logo"><FaTemperatureQuarter /></div></p>
               <p>The temperature is {temperature} degrees</p>
             </div>
             <button onClick={refreshPage}>Check out somewhere else!</button>
