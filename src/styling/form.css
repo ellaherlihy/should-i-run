@@ -7,16 +7,13 @@ form {
   flex-direction: column;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="postcode"] {
   height: 2rem;
   text-indent: 1rem;
   border: 1px solid #444;
   border-radius: 5px;
   display: block;
-}
-
-input[type="checkbox"], input[type="radio"] {
-  margin-right: 0.75rem;
+  background-color: rgb(205, 221, 208);
 }
 
 textarea {
@@ -34,7 +31,7 @@ p {
 
 button {
   align-items: center;
-  background-color: rgb(8, 187, 38);
+  background-color: rgb(4, 138, 26);
   border: 2px solid #111;
   border-radius: .5rem;
   box-sizing: border-box;
@@ -58,7 +55,7 @@ button {
 }
 
 button:after {
-  background-color: #111;
+  background-color: rgb(3, 59, 13);
   border-radius: .5rem;
   content: "";
   display: block;
@@ -77,7 +74,7 @@ button:hover:after {
 }
 
 button:active {
-  background-color: rgb(8, 187, 38);
+  background-color: rgb(4, 138, 26);
   outline: 0;
 }
 
