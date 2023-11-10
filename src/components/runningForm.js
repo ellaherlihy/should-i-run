@@ -106,7 +106,6 @@ export default function RunningFormForm() {
       {!formSubmitted && (
         <form onSubmit={handleSubmit}>
           <h1>Should I go for a run?</h1>
-          <label htmlFor="duration">Where do you want to run?</label>
           <br />
           <input
             type="text"
