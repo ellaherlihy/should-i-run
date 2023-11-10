@@ -51,7 +51,7 @@ button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin: 2rem 0 0 0;
+  margin: 2rem 0 2rem 0;
 }
 
 button:after {
@@ -102,8 +102,9 @@ button:hover {
   flex-direction: column;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   button {
-    padding: 0 40px;
+    padding: 1rem;
+    font-size: 1rem;
   }
 }

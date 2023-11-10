@@ -16,3 +16,13 @@ h1 {
   font-size: 2rem;
   text-align: center;
 }
+
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+
+  h1 {
+      font-size: 1rem;
+    }
+  }

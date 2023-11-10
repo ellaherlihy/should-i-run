@@ -8,6 +8,7 @@ const airQualityAPIKey = process.env.REACT_APP_AQ_API_KEY;
 
 const weatherIcons = {
   "01d": "clear sky (day)",
+  "01n": "clear sky (night)",
   "04d": "broken clouds",
   "04n": "clear sky (night)",
   "02d": "few clouds (day)",
@@ -114,7 +115,7 @@ export default function RunningFormForm() {
             name="postcode"
             value={formData.postcode}
           />
-          <button>help me decide 🏃‍♀️</button>
+          <button>Go! 🏃‍♀️</button>
         </form>
       )}
         {formSubmitted && (
@@ -131,7 +132,7 @@ export default function RunningFormForm() {
               <p><div className="logo"><FaTemperatureQuarter /></div></p>
               <p>The temperature is {temperature} degrees</p>
             </div>
-            <button onClick={refreshPage}>Check out somewhere else!</button>
+            <button onClick={refreshPage}>Try again!</button>
           </div>
         )}
     </div>
