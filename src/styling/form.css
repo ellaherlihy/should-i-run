@@ -18,7 +18,7 @@ input[type="text"], input[type="postcode"] {
 
 textarea {
   margin-bottom: 1rem;
-  border: 1px solid #444;
+  border: 1px solid #a49f9f;
   border-radius: 5px;
   display: block;
 }

@@ -78,7 +78,7 @@ export default function RunningFormForm() {
   async function airQualityApi() {
     try {
       const secondResponse = await fetch(
-        `http://api.airvisual.com/v2/nearest_city?lat=${location.lat}&lon=-${location.long}&key=${airQualityAPIKey}`
+        `https://api.airvisual.com/v2/nearest_city?lat=${location.lat}&lon=-${location.long}&key=${airQualityAPIKey}`
         );
       const secondData = await secondResponse.json();
       console.log(secondData)
