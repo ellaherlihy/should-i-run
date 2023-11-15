@@ -102,6 +102,17 @@ button:hover {
   flex-direction: column;
 }
 
+.results--heatmap {
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+}
+
+a {
+  text-decoration: underline;
+  color: black;
+}
+
 @media (max-width: 768px) {
   button {
     padding: 1rem;

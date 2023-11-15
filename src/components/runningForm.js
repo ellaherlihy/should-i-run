@@ -132,6 +132,15 @@ export default function RunningFormForm() {
               <p><div className="logo"><FaTemperatureQuarter /></div></p>
               <p>The temperature is {temperature} degrees</p>
             </div>
+            <br />
+            <br />
+            <div className="results--heatmap-container">
+              <div className="results--heatmap">
+                Need some running route inspiration?
+                <br />
+                Check out your local Strava heatmap for popular routes <a href={`https://www.strava.com/heatmap#14.74/${location.long}/${location.lat}/hot/all`} target="_blank" rel="noreferrer">here</a>
+              </div>
+            </div>
             <button onClick={refreshPage}>Try again!</button>
           </div>
         )}
